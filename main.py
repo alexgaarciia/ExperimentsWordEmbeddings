@@ -1,103 +1,52 @@
-# Import necessary libraries/modules
+# Import necessary libraries/functions/modules
 import gensim.downloader
 import pandas as pd
+from functions import model_evaluator, output_df, compute_accuracy, save_data
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TASK 1
 # ----------------------------------------------------------------------------------------------------------------------
 # Load the pretrained embedding model:
-model = gensim.downloader.load("word2vec-google-news-300")
+model_name = "word2vec-google-news-300"
+model = gensim.downloader.load(model_name)
 
 # Load the Synonym Test dataset:
 dataset = pd.read_csv("A2-DataSet/synonym.csv")
-print(dataset)
 
-# Prepare the output data:
-output_data = []
+# Save the data:
+analysis_dic = {}
+save_data(analysis_dic, model_name, model, model_evaluator(model, dataset))
 
-def model_evaluator(model, dataset):
-    # Iterate through each row in the dataset
-    for index, row in dataset.iterrows():
-        # Extract the question and answer words from the current row
-        question_word = row['question']
-        answer_word = row['answer']
+# Convert dictionary to DataFrame:
+analysis_df = pd.DataFrame.from_dict(analysis_dic, orient="index")
 
-        # Generate a list of guess words from the current row
-        guess_words = [row[str(i)] for i in range(4)]
-
-        # Check if the question word is in the model
-        if question_word in model:
-            # Initialize a list to store similarities between question and guess words
-            similarities = []
-
-            # Loop through each guess word
-            for guess_word in guess_words:
-                # Check if the guess word is in the model
-                if guess_word in model:
-                    # Calculate the similarity between question and guess word using the similarity method from Gensim
-                    similarity = model.similarity(question_word, guess_word)
-                    # Store the guess word and its similarity score
-                    similarities.append((guess_word, similarity))
-
-            # Determine the best guess based on the highest similarity score
-            if similarities:
-                best_guess, _ = max(similarities, key=lambda x: x[1])
-                # Label as "correct" if the best guess matches the answer word
-                label = 'correct' if best_guess == answer_word else 'wrong'
-            else:
-                # If no valid guesses, set best guess to None and label as "guess"
-                best_guess = None
-                label = 'guess'
-        else:
-            # If question word is not in the model, no guess can be made
-            best_guess = None
-            label = 'guess'
-
-        # Append the results to the output data
-        output_data.append([question_word, answer_word, best_guess, label])
-    return output_data
-
-# Convert the output data to a DataFrame and save the output to a CSV file:
-output_df = pd.DataFrame(output_data, columns=['question-word', 'answer-word', 'guess-word', 'label'])
-output_df.to_csv('word2vec-google-news-300-details.csv', index=False)
-
-# In order to create the "analysis.csv" file, some steps must be followed:
-def compute_accuracy(output_df):
-    # 1. Count the number of correct (C) and non-guess labels (V):
-    C = (output_df['label'] == 'correct').sum()
-    V = (output_df['label'] != 'guess').sum()
-
-    # 2. Calculate the accuracy:
-    if V:
-        accuracy = C/V
-    else:
-        accuracy = 0
-    return ("The accuracy of this model is: ", accuracy)
+# Save the DataFrame to a CSV file:
+analysis_df.to_csv('analysis.csv', index=False, header=False)
 
 
-# 3. Create a DataFrame and save to csv:
-analysis_df = {}
-def save_to_CSV(analysis_df, model_name, model, correct_labels, answered_questions, accuracy):
-    new_entry = {
-        'model_name': model_name,
-        'vocabulary_size': len(model.key_to_index),
-        'correct_labels': correct_labels,
-        'answered_questions': answered_questions,
-        'accuracy': accuracy
-    }
-    analysis_df[model_name] = new_entry
-    return analysis_df
+# ----------------------------------------------------------------------------------------------------------------------
+# TASK 2
+# ----------------------------------------------------------------------------------------------------------------------
+# Load the pretrained embedding model:
+model_name1 = "glove-wiki-gigaword-300"
+model_name2 = "word2vec-ruscorpora-300"
+model_name3 = "glove-twitter-100"
+model_name4 = "glove-twitter-200"
 
-"""
-analysis_df = add_model_analysis(analysis_df, 'word2vec-google-news-300', model, C, V, accuracy)
+model1 = gensim.downloader.load(model_name1)
+model2 = gensim.downloader.load(model_name2)
+model3 = gensim.downloader.load(model_name3)
+model4 = gensim.downloader.load(model_name4)
 
-analysis_df = pd.DataFrame({
-    'model_name': ['word2vec-google-news-300'],
-    'vocabulary_size': [len(model.key_to_index)],
-    'correct_labels': [C],
-    'answered_questions': [V],
-    'accuracy': [accuracy]
-})
-"""
+# Save the data:
+save_data(analysis_dic, model_name1, model1, model_evaluator(model1, dataset))
+save_data(analysis_dic, model_name2, model2, model_evaluator(model2, dataset))
+save_data(analysis_dic, model_name3, model3, model_evaluator(model3, dataset))
+save_data(analysis_dic, model_name4, model4, model_evaluator(model4, dataset))
 
-analysis_df.to_csv('analysis.csv', index=False)
+# Convert dictionary to DataFrame:
+analysis_df = pd.DataFrame.from_dict(analysis_dic, orient="index")
+
+# Save the DataFrame to a CSV file:
+analysis_df.to_csv('analysis.csv', index=False, header=False)
+
