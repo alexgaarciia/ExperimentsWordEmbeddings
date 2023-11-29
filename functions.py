@@ -82,3 +82,14 @@ def save_data(analysis_dic, model_name, model, output_data):
         'accuracy': accuracy
     }
     analysis_dic[model_name] = new_entry
+
+# Preprocess function to tokenize and split sentences
+def preprocess_books(books):
+    sentences = []
+    for book in books:
+        with open(book, 'r', encoding='utf-8') as file:
+            text = file.read()
+            # Tokenize into sentences
+            # .extend removes duplicates from the vocabulary list
+            sentences.extend(sent_tokenize(text))
+    return [word_tokenize(sentence.lower()) for sentence in sentences]
