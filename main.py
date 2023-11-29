@@ -1,7 +1,7 @@
 # Import necessary libraries/functions/modules
 import gensim.downloader
 import pandas as pd
-from functions import model_evaluator, output_df, compute_accuracy, save_data
+from functions import model_evaluator, output_df, compute_accuracy, save_data, preprocess_books
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TASK 1
