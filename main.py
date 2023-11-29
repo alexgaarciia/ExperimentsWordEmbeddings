@@ -2,6 +2,7 @@
 import gensim.downloader
 import pandas as pd
 from functions import model_evaluator, output_df, compute_accuracy, save_data, preprocess_books
+import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TASK 1
@@ -61,9 +62,6 @@ import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
 # TASK 3
 # ----------------------------------------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------------------------------------
-# TASK 3
-# ----------------------------------------------------------------------------------------------------------------------
 
 books = ['agnes_grey.txt', 'frankestein.txt', 'jane_eyre.txt', 'little_women.txt', 'mrs_dalloway.txt', 'pride_and_prejudice.txt', 'regiment_of_women.txt', 'wuthering_heights.txt']
 window_sizes = [100, 200]
@@ -86,3 +84,30 @@ for window_size in window_sizes:
         analysis_df = pd.DataFrame.from_dict(analysis_dic, orient="index")
         # Save the DataFrame to a CSV file:
         analysis_df.to_csv('analysis.csv', index=False, header=False)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# TASK 3.2: Evaluation of models
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Load analysis results from the CSV file
+analysis_df = pd.read_csv('analysis.csv', header=None, names=['model_name', 'vocabulary_size', 'correct_labels', 'answered_questions', 'accuracy'])
+
+# Sort the DataFrame by accuracy in descending order
+analysis_df = analysis_df.sort_values(by='accuracy', ascending=False)
+
+# Plot the bar graph
+plt.figure(figsize=(10, 6))
+plt.bar(analysis_df['model_name'], analysis_df['accuracy'], color=['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'gray'])
+plt.xlabel('Model')
+plt.ylabel('Accuracy')
+plt.title('Model Comparison in terms of accuracy')
+plt.ylim(0, 1)  # Set y-axis limit to better visualize differences
+plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
+plt.tight_layout()
+
+# Save the plot as an image (optional)
+plt.savefig('model_comparison_accuracy.png')
+
+# Display the plot
+plt.show()
