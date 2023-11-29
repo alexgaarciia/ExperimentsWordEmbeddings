@@ -50,3 +50,39 @@ analysis_df = pd.DataFrame.from_dict(analysis_dic, orient="index")
 # Save the DataFrame to a CSV file:
 analysis_df.to_csv('analysis.csv', index=False, header=False)
 
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+from gensim.models import Word2Vec
+import pandas as pd
+
+# Download NLTK resources (if not done previously)
+# nltk.download('punkt')
+
+# ----------------------------------------------------------------------------------------------------------------------
+# TASK 3
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# TASK 3
+# ----------------------------------------------------------------------------------------------------------------------
+
+books = ['agnes_grey.txt', 'frankestein.txt', 'jane_eyre.txt', 'little_women.txt', 'mrs_dalloway.txt', 'pride_and_prejudice.txt', 'regiment_of_women.txt', 'wuthering_heights.txt']
+window_sizes = [100, 200]
+embedding_sizes = [100, 300]
+
+for window_size in window_sizes:
+    for embedding_size in embedding_sizes:
+        model_name = f'Model_W{window_size}_E{embedding_size}'
+
+        # Preprocess books
+        sentences = preprocess_books(books)
+
+        # Train Word2Vec model
+        model = Word2Vec(sentences, vector_size = embedding_size, window = window_size, min_count = 1, workers = 4)
+
+        # Save details to CSV
+        save_data(analysis_dic, model_name, model.wv, model_evaluator(model.wv, dataset))
+
+        # Convert dictionary to DataFrame:
+        analysis_df = pd.DataFrame.from_dict(analysis_dic, orient="index")
+        # Save the DataFrame to a CSV file:
+        analysis_df.to_csv('analysis.csv', index=False, header=False)
