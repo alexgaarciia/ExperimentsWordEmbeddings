@@ -1,5 +1,6 @@
 # Import necessary libraries
 import pandas as pd
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 
 # Function used to evaluate the model:

@@ -1,10 +1,8 @@
 # Import necessary libraries/functions/modules
-import nltk
 import pandas as pd
 import gensim.downloader
 import matplotlib.pyplot as plt
 from gensim.models import Word2Vec
-from nltk.tokenize import word_tokenize, sent_tokenize
 from functions import model_evaluator, output_df, compute_accuracy, save_data, preprocess_books
 # nltk.download('punkt')  # Download NLTK resources (if not done previously)
 
