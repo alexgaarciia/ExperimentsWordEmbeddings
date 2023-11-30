@@ -61,9 +61,9 @@ analysis_df.to_csv('analysis.csv', index=False, header=False)
 # TASK 3
 # ----------------------------------------------------------------------------------------------------------------------
 # Declare variables that will be used in the task, such as the books, the window sizes or the embedding sizes:
-books = ['agnes_grey.txt', 'frankestein.txt', 'jane_eyre.txt', 'little_women.txt',
-         'mrs_dalloway.txt', 'pride_and_prejudice.txt', 'regiment_of_women.txt',
-         'wuthering_heights.txt']
+books = ['Books/agnes_grey.txt', 'Books/frankestein.txt', 'Books/jane_eyre.txt',
+         'Books/little_women.txt', 'Books/mrs_dalloway.txt', 'Books/pride_and_prejudice.txt',
+         'Books/regiment_of_women.txt', 'Books/wuthering_heights.txt']
 window_sizes = [100, 200]
 embedding_sizes = [100, 300]
 
