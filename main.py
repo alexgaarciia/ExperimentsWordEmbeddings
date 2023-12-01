@@ -31,7 +31,7 @@ analysis_df.to_csv('analysis.csv', index=False, header=False)
 # ----------------------------------------------------------------------------------------------------------------------
 # TASK 2
 # ----------------------------------------------------------------------------------------------------------------------
-# Load the pretrained embedding model:
+# Load the pretrained embedding models:
 model_name1 = "glove-wiki-gigaword-300"
 model_name2 = "fasttext-wiki-news-subwords-300"
 model_name3 = "glove-twitter-100"

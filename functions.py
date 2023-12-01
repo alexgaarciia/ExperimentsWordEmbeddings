@@ -5,7 +5,7 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 
 # Function used to evaluate the model:
 def model_evaluator(model, dataset):
-    # Prepare the output data:
+    # Prepare the output data
     output_data = []
 
     # Iterate through each row in the dataset
@@ -52,7 +52,7 @@ def model_evaluator(model, dataset):
 
 # Function used to transform the data into a DataFrame and CSV file:
 def output_df(output_data, model_name):
-    # Convert the output data to a DataFrame and save the output to a CSV file:
+    # Convert the output data to a DataFrame and save the output to a CSV file
     output_df = pd.DataFrame(output_data, columns=['question-word', 'answer-word', 'guess-word', 'label'])
     output_df.to_csv(model_name + "-details.csv", index=False)
     return output_df
@@ -60,11 +60,11 @@ def output_df(output_data, model_name):
 
 # Function used to compute the metrics:
 def compute_accuracy(output_df):
-    # 1. Count the number of correct (C) and non-guess labels (V):
+    # 1. Count the number of correct (C) and non-guess labels (V)
     C = (output_df['label'] == 'correct').sum()
     V = (output_df['label'] != 'guess').sum()
 
-    # 2. Calculate the accuracy:
+    # 2. Calculate the accuracy
     if V:
         accuracy = C / V
     else:
